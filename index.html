@@ -196,11 +196,27 @@
                 const form = document.getElementById("add-thesis-form");
                 form.onsubmit = function (event) {
                   event.preventDefault(); // Varsayılan submit işlemini engelle
-                  updateThesis(thesisid);
+                  updateThesis(thesisid); // Sadece güncelleme yap
                 };
               }
             })
             .catch(error => console.error("Error fetching thesis:", error));
+  }
+
+  function resetForm() {
+    // Formu sıfırla
+    document.getElementById("add-thesis-form").reset();
+
+    // Form başlığını ve düğmeyi geri değiştir
+    document.getElementById("form-title").textContent = "Add New Thesis";
+    document.getElementById("submit-button").textContent = "Add Thesis";
+
+    // Formu tekrar ekleme moduna geçir
+    const form = document.getElementById("add-thesis-form");
+    form.onsubmit = function (event) {
+      event.preventDefault(); // Varsayılan submit işlemini engelle
+      addThesis();
+    };
   }
 
   function updateThesis(thesisid) {
@@ -228,7 +244,7 @@
             .then(data => {
               alert(data.message);
               getTheses(); // Listeyi yenile
-              resetForm(); // Formu sıfırla
+              resetForm(); // Formu sıfırla ve ekleme moduna dön
             })
             .catch(error => console.error("Error updating thesis:", error));
   }
