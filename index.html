@@ -1,40 +1,207 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/webstorm-icon-logo.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WS playground</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thesis Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    input[type="text"], input[type="number"], input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #form-container {
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-<header class="logo">
-  <a href="https://www.jetbrains.com/webstorm/">
-    <img src="/webstorm-logo.svg" alt="WebStorm logo" width="344"
-         height="90">
-  </a>
-</header>
-<main id="app">
-  <h1 class="title">
-    Thank you for trying it out. <br /> Your first project is up and running
-    now.
-  </h1>
-  <section class="counter">
-    <div class="counter-info">
-      <p class="counter-text">Counter is</p>
-      <p class="counter-value" id="counter-value"></p>
-    </div>
-    <div class="counter-interaction">
-      <button id="increaseByOne" type="button">+1</button>
-      <button id="increaseByTwo" type="button">+2</button>
-      <button id="decreaseByOne" type="button">-1</button>
-      <button id="decreaseByTwo" type="button">-2</button>
-    </div>
-  </section>
-</main>
-<footer class="technologies">
-  <img src="/technologies.svg" alt="List of supported technologies">
-</footer>
-<script type="module" src="/src/main.js"></script>
+
+<h1>Thesis Management</h1>
+
+<!-- Tez Ekleme Formu -->
+<div id="form-container">
+  <h2>Add New Thesis</h2>
+  <form id="add-thesis-form">
+    <label for="title">Title</label>
+    <input type="text" id="title" required>
+
+    <label for="abstract">Abstract</label>
+    <input type="text" id="abstract">
+
+    <label for="authorid">Author ID</label>
+    <input type="number" id="authorid" required>
+
+    <label for="year">Year</label>
+    <input type="number" id="year" required>
+
+    <label for="type">Type</label>
+    <input type="text" id="type">
+
+    <label for="universityid">University ID</label>
+    <input type="number" id="universityid" required>
+
+    <label for="instituteid">Institute ID</label>
+    <input type="number" id="instituteid" required>
+
+    <label for="numberofpages">Number of Pages</label>
+    <input type="number" id="numberofpages">
+
+    <label for="language">Language</label>
+    <input type="text" id="language">
+
+    <label for="submissiondate">Submission Date</label>
+    <input type="date" id="submissiondate" required>
+
+    <button type="submit">Add Thesis</button>
+  </form>
+</div>
+
+<!-- Tez Listeleme -->
+<h2>Theses List</h2>
+<table id="thesis-list">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Abstract</th>
+    <th>Author ID</th>
+    <th>Year</th>
+    <th>Type</th>
+    <th>University ID</th>
+    <th>Institute ID</th>
+    <th>Number of Pages</th>
+    <th>Language</th>
+    <th>Submission Date</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- Tezler buraya yüklenecek -->
+  </tbody>
+</table>
+
+<script>
+  // API URL
+  const apiUrl = "http://127.0.0.1:5000";
+
+  // Fonksiyon: Tüm tezleri al ve tabloya ekle
+  function getTheses() {
+    fetch(`${apiUrl}/theses`)
+            .then(response => response.json())
+            .then(data => {
+              const tbody = document.querySelector("#thesis-list tbody");
+              tbody.innerHTML = ""; // Önceki içeriği temizle
+
+              data.forEach(thesis => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${thesis.thesisid}</td>
+                    <td>${thesis.title}</td>
+                    <td>${thesis.abstract}</td>
+                    <td>${thesis.authorid}</td>
+                    <td>${thesis.year}</td>
+                    <td>${thesis.type}</td>
+                    <td>${thesis.universityid}</td>
+                    <td>${thesis.instituteid}</td>
+                    <td>${thesis.numberofpages}</td>
+                    <td>${thesis.language}</td>
+                    <td>${thesis.submissiondate}</td>
+                    <td>
+                        <button onclick="deleteThesis(${thesis.thesisid})">Delete</button>
+                        <button onclick="editThesis(${thesis.thesisid})">Edit</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+              });
+            })
+            .catch(error => console.error("Error fetching theses:", error));
+  }
+
+  // Fonksiyon: Tez silme
+  function deleteThesis(thesisid) {
+    fetch(`${apiUrl}/delete-thesis/${thesisid}`, { method: "DELETE" })
+            .then(response => {
+              if (response.ok) {
+                alert("Thesis deleted successfully!");
+                getTheses(); // Yeniden tezleri listele
+              } else {
+                alert("Failed to delete thesis");
+              }
+            })
+            .catch(error => console.error("Error deleting thesis:", error));
+  }
+
+  // Fonksiyon: Tez güncelleme
+  function editThesis(thesisid) {
+    alert("Edit feature not implemented yet.");
+    // Güncelleme işlemi için formda gerekli alanları doldurup PUT isteği gönderilebilir.
+  }
+
+  // Formu işleme
+  document.getElementById("add-thesis-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const thesisData = {
+      title: document.getElementById("title").value,
+      abstract: document.getElementById("abstract").value,
+      authorid: document.getElementById("authorid").value,
+      year: document.getElementById("year").value,
+      type: document.getElementById("type").value,
+      universityid: document.getElementById("universityid").value,
+      instituteid: document.getElementById("instituteid").value,
+      numberofpages: document.getElementById("numberofpages").value,
+      language: document.getElementById("language").value,
+      submissiondate: document.getElementById("submissiondate").value
+    };
+
+    fetch(`${apiUrl}/add-thesis`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(thesisData)
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.message) {
+                alert("Thesis added successfully!");
+                getTheses(); // Tezleri tekrar yükle
+              } else {
+                alert("Failed to add thesis");
+              }
+            })
+            .catch(error => console.error("Error adding thesis:", error));
+  });
+
+  // Sayfa yüklendiğinde tezleri al
+  getTheses();
+</script>
+
 </body>
 </html>
