@@ -75,6 +75,40 @@
   </form>
 </div>
 
+<div id="delete-entities-container">
+  <h3>Delete Entities</h3>
+
+  <!-- Delete University -->
+  <div id="delete-university-container">
+    <h4>Delete University</h4>
+    <select id="delete-university-dropdown">
+      <option value="">Select University</option>
+      <!-- University seçenekleri buraya yüklenecek -->
+    </select>
+    <button id="delete-university-button">Delete University</button>
+  </div>
+
+  <!-- Delete Institute -->
+  <div id="delete-institute-container">
+    <h4>Delete Institute</h4>
+    <select id="delete-institute-dropdown">
+      <option value="">Select Institute</option>
+      <!-- Institute seçenekleri buraya yüklenecek -->
+    </select>
+    <button id="delete-institute-button">Delete Institute</button>
+  </div>
+
+  <!-- Delete Author -->
+  <div id="delete-author-container">
+    <h4>Delete Author</h4>
+    <select id="delete-author-dropdown">
+      <option value="">Select Author</option>
+      <!-- Author seçenekleri buraya yüklenecek -->
+    </select>
+    <button id="delete-author-button">Delete Author</button>
+  </div>
+</div>
+
 <h1>Thesis Management</h1>
 
 <!-- Tez Ekleme veya Düzenleme Formu -->
@@ -171,10 +205,21 @@
 <script>
   const apiUrl = "http://127.0.0.1:5000";
 
+  // Sayfa yüklendiğinde başlat
+  document.addEventListener("DOMContentLoaded", function () {
+    loadDropdownsForDeletion();
+    setupDeleteButtons();
+    getTheses();
+    loadDropdowns();
+  });
+
   // Tezleri getir ve listele
   function getTheses() {
     fetch(`${apiUrl}/theses`)
-            .then(response => response.json())
+            .then(response => {
+              if (!response.ok) throw new Error("Failed to fetch theses");
+              return response.json();
+            })
             .then(data => {
               const tbody = document.querySelector("#thesis-list tbody");
               tbody.innerHTML = ""; // Önceki içeriği temizle
@@ -203,46 +248,42 @@
             .catch(error => console.error("Error fetching theses:", error));
   }
 
-  // Yeni bir üniversite ekle
-  preventDuplicateEventListener("add-university-form", function(event) {
-    event.preventDefault();
-    const universityName = document.getElementById("university-name").value;
+  // Dropdown menüleri doldur
+  function loadDropdowns() {
+    fetchDropdown(`${apiUrl}/authors`, "authorid", "authorid", "name");
+    fetchDropdown(`${apiUrl}/universities`, "universityid", "universityid", "name");
+    fetchDropdown(`${apiUrl}/institutes`, "instituteid", "instituteid", "name");
+  }
 
-    fetch(`${apiUrl}/add-university`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: universityName })
-    })
-            .then(response => response.json())
-            .then(data => {
-              alert(data.message);
-              document.getElementById("add-university-form").reset();
-              loadDropdowns(); // Dropdownları yenile
+  // Silme işlemleri için dropdownları doldur
+  function loadDropdownsForDeletion() {
+    fetchDropdown(`${apiUrl}/authors`, "delete-author-dropdown", "authorid", "name");
+    fetchDropdown(`${apiUrl}/universities`, "delete-university-dropdown", "universityid", "name");
+    fetchDropdown(`${apiUrl}/institutes`, "delete-institute-dropdown", "instituteid", "name");
+  }
+
+  // Dropdown doldurucu
+  function fetchDropdown(url, elementId, valueKey, textKey) {
+    fetch(url)
+            .then(response => {
+              if (!response.ok) throw new Error(`Failed to fetch data from ${url}`);
+              return response.json();
             })
-            .catch(error => console.error("Error adding university:", error));
-  });
-
-  // Yeni bir enstitü ekle
-  preventDuplicateEventListener("add-institute-form", function(event) {
-    event.preventDefault();
-    const instituteName = document.getElementById("institute-name").value;
-
-    fetch(`${apiUrl}/add-institute`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: instituteName })
-    })
-            .then(response => response.json())
             .then(data => {
-              alert(data.message);
-              document.getElementById("add-institute-form").reset();
-              loadDropdowns(); // Dropdownları yenile
+              const dropdown = document.getElementById(elementId);
+              dropdown.innerHTML = `<option value="">Select ${textKey}</option>`;
+              data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item[valueKey];
+                option.textContent = item[textKey];
+                dropdown.appendChild(option);
+              });
             })
-            .catch(error => console.error("Error adding institute:", error));
-  });
+            .catch(error => console.error(`Error fetching ${textKey}s:`, error));
+  }
 
-  // Yeni bir yazar ekle
-  preventDuplicateEventListener("add-author-form", function(event) {
+  // Yeni yazar ekleme
+  preventDuplicateEventListener("add-author-form", function (event) {
     event.preventDefault();
     const authorName = document.getElementById("author-name").value.trim();
     if (!authorName) {
@@ -255,137 +296,44 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: authorName })
     })
-            .then(response => response.json())
+            .then(response => {
+              if (!response.ok) throw new Error("Failed to add author");
+              return response.json();
+            })
             .then(data => {
               alert(data.message);
               document.getElementById("add-author-form").reset();
-              loadDropdowns(); // Dropdownları yenile
+              loadDropdowns();
             })
             .catch(error => console.error("Error adding author:", error));
   });
 
-  // Dropdown menüleri doldur
-  function loadDropdowns() {
-    // Authors Dropdown
-    fetch(`${apiUrl}/authors`)
-            .then(response => response.json())
-            .then(authors => {
-              const authorSelect = document.getElementById("authorid");
-              authorSelect.innerHTML = '<option value="">Select Author</option>';
-              authors.forEach(author => {
-                const option = document.createElement("option");
-                option.value = author.authorid;
-                option.textContent = `${author.authorid} - ${author.name}`;
-                authorSelect.appendChild(option);
-              });
-            })
-            .catch(error => console.error("Error fetching authors:", error));
-
-    // Universities Dropdown
-    fetch(`${apiUrl}/universities`)
-            .then(response => response.json())
-            .then(universities => {
-              const universitySelect = document.getElementById("universityid");
-              universitySelect.innerHTML = '<option value="">Select University</option>';
-              universities.forEach(university => {
-                const option = document.createElement("option");
-                option.value = university.universityid;
-                option.textContent = `${university.universityid} - ${university.name}`;
-                universitySelect.appendChild(option);
-              });
-            })
-            .catch(error => console.error("Error fetching universities:", error));
-
-    // Institutes Dropdown
-    fetch(`${apiUrl}/institutes`)
-            .then(response => response.json())
-            .then(institutes => {
-              const instituteSelect = document.getElementById("instituteid");
-              instituteSelect.innerHTML = '<option value="">Select Institute</option>';
-              institutes.forEach(institute => {
-                const option = document.createElement("option");
-                option.value = institute.instituteid;
-                option.textContent = `${institute.instituteid} - ${institute.name}`;
-                instituteSelect.appendChild(option);
-              });
-            })
-            .catch(error => console.error("Error fetching institutes:", error));
+  // Silme butonlarını ayarla
+  function setupDeleteButtons() {
+    setupDeleteButton("delete-university-button", "delete-university-dropdown", "university");
+    setupDeleteButton("delete-institute-button", "delete-institute-dropdown", "institute");
+    setupDeleteButton("delete-author-button", "delete-author-dropdown", "author");
   }
 
-  // Tez düzenleme fonksiyonu
-  function editThesis(thesisid) {
-    fetch(`${apiUrl}/theses`)
-            .then(response => response.json())
-            .then(data => {
-              const thesis = data.find(t => t.thesisid === thesisid);
-              if (thesis) {
-                document.getElementById("title").value = thesis.title;
-                document.getElementById("abstract").value = thesis.abstract || "";
-                document.getElementById("authorid").value = thesis.authorid;
-                document.getElementById("year").value = thesis.year;
-                document.getElementById("type").value = thesis.type || "";
-                document.getElementById("universityid").value = thesis.universityid;
-                document.getElementById("instituteid").value = thesis.instituteid;
-                document.getElementById("numberofpages").value = thesis.numberofpages || "";
-                document.getElementById("language").value = thesis.language || "";
-                document.getElementById("submissiondate").value = thesis.submissiondate;
+  function setupDeleteButton(buttonId, dropdownId, type) {
+    document.getElementById(buttonId).addEventListener("click", function () {
+      const id = document.getElementById(dropdownId).value;
+      if (!id) {
+        alert(`Please select a ${type} to delete.`);
+        return;
+      }
 
-                document.getElementById("form-title").textContent = "Edit Thesis";
-                document.getElementById("submit-button").textContent = "Update Thesis";
-
-                const form = document.getElementById("add-thesis-form");
-                form.onsubmit = function(event) {
-                  event.preventDefault();
-                  updateThesis(thesisid);
-                };
-              }
-            })
-            .catch(error => console.error("Error fetching thesis:", error));
-  }
-
-  // Tez güncelleme
-  function updateThesis(thesisid) {
-    const thesisData = {
-      title: document.getElementById("title").value,
-      abstract: document.getElementById("abstract").value,
-      authorid: parseInt(document.getElementById("authorid").value),
-      year: parseInt(document.getElementById("year").value),
-      type: document.getElementById("type").value,
-      universityid: parseInt(document.getElementById("universityid").value),
-      instituteid: parseInt(document.getElementById("instituteid").value),
-      numberofpages: parseInt(document.getElementById("numberofpages").value) || null,
-      language: document.getElementById("language").value,
-      submissiondate: document.getElementById("submissiondate").value
-    };
-
-    fetch(`${apiUrl}/update-thesis/${thesisid}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(thesisData)
-    })
-            .then(response => response.json())
-            .then(data => {
-              alert(data.message);
-              getTheses(); // Listeyi yenile
-              resetForm(); // Formu sıfırla
-            })
-            .catch(error => console.error("Error updating thesis:", error));
-  }
-
-  // Tez silme
-  function deleteThesis(thesisid) {
-    if (confirm(`Are you sure you want to delete the thesis with ID ${thesisid}?`)) {
-      fetch(`${apiUrl}/delete-thesis/${thesisid}`, { method: "DELETE" })
+      fetch(`${apiUrl}/delete-${type}/${id}`, { method: "DELETE" })
               .then(response => {
-                if (!response.ok) throw new Error("Failed to delete thesis");
+                if (!response.ok) throw new Error(`Failed to delete ${type}`);
                 return response.json();
               })
               .then(data => {
                 alert(data.message);
-                getTheses();
+                loadDropdownsForDeletion();
               })
-              .catch(error => console.error("Error deleting thesis:", error));
-    }
+              .catch(error => console.error(`Error deleting ${type}:`, error));
+    });
   }
 
   // Çakışmayı önleyen event listener
@@ -396,10 +344,6 @@
       form.dataset.listenerAdded = "true";
     }
   }
-
-  // Sayfa yüklendiğinde başlat
-  getTheses();
-  loadDropdowns();
 </script>
 
 </body>
