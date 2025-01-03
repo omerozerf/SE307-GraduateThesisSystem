@@ -56,6 +56,7 @@
 
     <label for="authorid">Author</label>
     <select id="authorid" required>
+      <option value="">Select Author</option>
       <!-- Author seçenekleri buraya gelecek -->
     </select>
 
@@ -63,15 +64,22 @@
     <input type="number" id="year" required>
 
     <label for="type">Type</label>
-    <input type="text" id="type">
+    <select id="type" required>
+      <option value="">Select Type</option>
+      <option value="Master">Master</option>
+      <option value="Doctorate">Doctorate</option>
+      <option value="Specialization in Medicine">Specialization in Medicine</option>
+    </select>
 
     <label for="universityid">University</label>
     <select id="universityid" required>
+      <option value="">Select University</option>
       <!-- University seçenekleri buraya gelecek -->
     </select>
 
     <label for="instituteid">Institute</label>
     <select id="instituteid" required>
+      <option value="">Select Institute</option>
       <!-- Institute seçenekleri buraya gelecek -->
     </select>
 
@@ -79,7 +87,22 @@
     <input type="number" id="numberofpages">
 
     <label for="language">Language</label>
-    <input type="text" id="language">
+    <select id="language" required>
+      <option value="">Select Language</option>
+      <option value="English">English</option>
+      <option value="Turkish">Turkish</option>
+      <option value="French">French</option>
+      <option value="Spanish">Spanish</option>
+      <option value="German">German</option>
+      <option value="Chinese">Chinese</option>
+      <option value="Japanese">Japanese</option>
+      <option value="Russian">Russian</option>
+      <option value="Arabic">Arabic</option>
+      <option value="Portuguese">Portuguese</option>
+      <option value="Italian">Italian</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Korean">Korean</option>
+    </select>
 
     <label for="submissiondate">Submission Date</label>
     <input type="date" id="submissiondate" required>
@@ -250,44 +273,50 @@
 
   // Dropdown menüleri doldur
   function loadDropdowns() {
+    // Authors Dropdown
     fetch(`${apiUrl}/authors`)
             .then(response => response.json())
             .then(authors => {
               const authorSelect = document.getElementById("authorid");
-              authorSelect.innerHTML = ""; // Önceki seçenekleri temizle
+              authorSelect.innerHTML = '<option value="">Select Author</option>'; // Varsayılan seçenek
               authors.forEach(author => {
                 const option = document.createElement("option");
-                option.value = author.authorid;
-                option.textContent = `${author.authorid} - ${author.name}`;
+                option.value = author.authorid; // `authorid` backend'den doğru geliyor
+                option.textContent = `${author.authorid} - ${author.name}`; // `name` alanı doğru şekilde yazılıyor
                 authorSelect.appendChild(option);
               });
-            });
+            })
+            .catch(error => console.error("Error fetching authors:", error));
 
+    // Universities Dropdown
     fetch(`${apiUrl}/universities`)
             .then(response => response.json())
             .then(universities => {
               const universitySelect = document.getElementById("universityid");
-              universitySelect.innerHTML = ""; // Önceki seçenekleri temizle
+              universitySelect.innerHTML = '<option value="">Select University</option>'; // Varsayılan seçenek
               universities.forEach(university => {
                 const option = document.createElement("option");
-                option.value = university.universityid;
-                option.textContent = `${university.universityid} - ${university.name}`;
+                option.value = university.universityid; // `universityid` doğru geliyor
+                option.textContent = `${university.universityid} - ${university.name}`; // `name` doğru şekilde yazılıyor
                 universitySelect.appendChild(option);
               });
-            });
+            })
+            .catch(error => console.error("Error fetching universities:", error));
 
+    // Institutes Dropdown
     fetch(`${apiUrl}/institutes`)
             .then(response => response.json())
             .then(institutes => {
               const instituteSelect = document.getElementById("instituteid");
-              instituteSelect.innerHTML = ""; // Önceki seçenekleri temizle
+              instituteSelect.innerHTML = '<option value="">Select Institute</option>'; // Varsayılan seçenek
               institutes.forEach(institute => {
                 const option = document.createElement("option");
-                option.value = institute.instituteid;
-                option.textContent = `${institute.instituteid} - ${institute.name}`;
+                option.value = institute.instituteid; // `instituteid` doğru geliyor
+                option.textContent = `${institute.instituteid} - ${institute.name}`; // `name` doğru şekilde yazılıyor
                 instituteSelect.appendChild(option);
               });
-            });
+            })
+            .catch(error => console.error("Error fetching institutes:", error));
   }
 
   // Yeni tez ekle
