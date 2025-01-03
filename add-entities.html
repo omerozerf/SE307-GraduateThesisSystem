@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Add Entities</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Navigasyon Menüsü -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="add-entities.html" class="active">Add Entities</a></li>
+        <li><a href="delete-entities.html">Delete Entities</a></li>
+        <li><a href="search-theses.html">Search Theses</a></li>
+        <li><a href="manage-theses.html">Manage Theses</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+    <h2>Add New Entities</h2>
+
+    <!-- Add New University -->
+    <div id="add-university-container">
+        <h3>Add New University</h3>
+        <form id="add-university-form">
+            <label for="university-name">University Name</label>
+            <input type="text" id="university-name" required />
+            <button type="submit">Add University</button>
+        </form>
+    </div>
+
+    <!-- Add New Institute -->
+    <div id="add-institute-container">
+        <h3>Add New Institute</h3>
+        <form id="add-institute-form">
+            <label for="institute-name">Institute Name</label>
+            <input type="text" id="institute-name" required />
+            <button type="submit">Add Institute</button>
+        </form>
+    </div>
+
+    <!-- Add New Author -->
+    <div id="add-author-container">
+        <h3>Add New Author</h3>
+        <form id="add-author-form">
+            <label for="author-name">Author Name</label>
+            <input type="text" id="author-name" required />
+            <button type="submit">Add Author</button>
+        </form>
+    </div>
+</div>
+
+<script src="script-common.js"></script>
+<script src="script-add-entities.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Delete Entities</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Navigasyon Menüsü -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="add-entities.html">Add Entities</a></li>
+        <li><a href="delete-entities.html" class="active">Delete Entities</a></li>
+        <li><a href="search-theses.html">Search Theses</a></li>
+        <li><a href="manage-theses.html">Manage Theses</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+    <h2>Delete Entities</h2>
+
+    <!-- Delete University -->
+    <div id="delete-university-container">
+        <h4>Delete University</h4>
+        <select id="delete-university-dropdown">
+            <option value="">Select University</option>
+        </select>
+        <button id="delete-university-button">Delete University</button>
+    </div>
+
+    <!-- Delete Institute -->
+    <div id="delete-institute-container">
+        <h4>Delete Institute</h4>
+        <select id="delete-institute-dropdown">
+            <option value="">Select Institute</option>
+        </select>
+        <button id="delete-institute-button">Delete Institute</button>
+    </div>
+
+    <!-- Delete Author -->
+    <div id="delete-author-container">
+        <h4>Delete Author</h4>
+        <select id="delete-author-dropdown">
+            <option value="">Select Author</option>
+        </select>
+        <button id="delete-author-button">Delete Author</button>
+    </div>
+</div>
+
+<script src="script-common.js"></script>
+<script src="script-delete-entities.js"></script>
+</body>
+</html>

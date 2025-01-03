@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Manage Theses</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Navigasyon Menüsü -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="add-entities.html">Add Entities</a></li>
+        <li><a href="delete-entities.html">Delete Entities</a></li>
+        <li><a href="search-theses.html">Search Theses</a></li>
+        <li><a href="manage-theses.html" class="active">Manage Theses</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+    <h1>Thesis Management</h1>
+
+    <!-- Tez Ekleme veya Düzenleme Formu -->
+    <div id="form-container">
+        <h2 id="form-title">Add New Thesis</h2>
+        <form id="add-thesis-form">
+            <label for="title">Title</label>
+            <input type="text" id="title" required />
+
+            <label for="abstract">Abstract</label>
+            <input type="text" id="abstract" />
+
+            <label for="authorid">Author</label>
+            <select id="authorid" required>
+                <option value="">Select Author</option>
+            </select>
+
+            <label for="year">Year</label>
+            <input type="number" id="year" required />
+
+            <label for="type">Type</label>
+            <select id="type" required>
+                <option value="">Select Type</option>
+                <option value="Master">Master</option>
+                <option value="Doctorate">Doctorate</option>
+                <option value="Specialization in Medicine">Specialization in Medicine</option>
+            </select>
+
+            <label for="universityid">University</label>
+            <select id="universityid" required>
+                <option value="">Select University</option>
+            </select>
+
+            <label for="instituteid">Institute</label>
+            <select id="instituteid" required>
+                <option value="">Select Institute</option>
+            </select>
+
+            <label for="numberofpages">Number of Pages</label>
+            <input type="number" id="numberofpages" />
+
+            <label for="language">Language</label>
+            <select id="language" required>
+                <option value="">Select Language</option>
+                <option value="English">English</option>
+                <option value="Turkish">Turkish</option>
+                <option value="French">French</option>
+                <option value="Spanish">Spanish</option>
+                <option value="German">German</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Russian">Russian</option>
+                <option value="Arabic">Arabic</option>
+                <option value="Portuguese">Portuguese</option>
+                <option value="Italian">Italian</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Korean">Korean</option>
+            </select>
+
+            <label for="submissiondate">Submission Date</label>
+            <input type="date" id="submissiondate" required />
+
+            <button type="submit" id="submit-button">Add Thesis</button>
+        </form>
+    </div>
+
+    <!-- Tez Listeleme -->
+    <h2>Theses List</h2>
+    <table id="thesis-list">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Abstract</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Type</th>
+            <th>University</th>
+            <th>Institute</th>
+            <th>Number of Pages</th>
+            <th>Language</th>
+            <th>Submission Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Tezler buraya yüklenecek -->
+        </tbody>
+    </table>
+</div>
+
+<script src="script-common.js"></script>
+<script src="script-manage-theses.js"></script>
+</body>
+</html>

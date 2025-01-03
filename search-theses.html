@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Search Theses</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Navigasyon Menüsü -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="add-entities.html">Add Entities</a></li>
+        <li><a href="delete-entities.html">Delete Entities</a></li>
+        <li><a href="search-theses.html" class="active">Search Theses</a></li>
+        <li><a href="manage-theses.html">Manage Theses</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+    <h2>Search Theses</h2>
+    <form id="search-theses-form">
+        <label for="search-author">Author</label>
+        <select id="search-author">
+            <option value="">Select Author</option>
+        </select>
+
+        <label for="search-keywords">Keywords</label>
+        <input type="text" id="search-keywords" placeholder="Enter keywords" />
+
+        <label for="search-year">Year</label>
+        <input type="number" id="search-year" placeholder="Enter year" />
+
+        <label for="search-type">Type</label>
+        <select id="search-type">
+            <option value="">Select Type</option>
+            <option value="Master">Master</option>
+            <option value="Doctorate">Doctorate</option>
+            <option value="Specialization in Medicine">Specialization in Medicine</option>
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Search Results</h2>
+    <table id="thesis-list">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Abstract</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Type</th>
+            <th>University</th>
+            <th>Institute</th>
+            <th>Number of Pages</th>
+            <th>Language</th>
+            <th>Submission Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Arama sonuçları buraya yüklenecek -->
+        </tbody>
+    </table>
+</div>
+
+<script src="script-common.js"></script>
+<script src="script-search-theses.js"></script>
+</body>
+</html>
