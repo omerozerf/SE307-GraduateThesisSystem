@@ -7,22 +7,78 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<!-- Navigation Menu -->
 <nav>
   <ul>
-    <li><a href="index.html" class="active">Home</a></li>
-    <li><a href="search-theses.html">Search Theses</a></li>
-    <li><a href="manage-theses.html">Manage Theses</a></li>
-    <li><a href="add-entities.html">Add Entities</a></li>
-    <li><a href="delete-entities.html">Delete Entities</a></li>
+    <li><a id="home-link" href="index.html" class="active">Home</a></li>
+    <li><a id="search-theses-link" href="search-theses.html">Search Theses</a></li>
+    <li><a id="manage-theses-link" href="manage-theses.html">Manage Theses</a></li>
+    <li><a id="add-entities-link" href="add-entities.html">Add Entities</a></li>
+    <li><a id="delete-entities-link" href="delete-entities.html">Delete Entities</a></li>
+    <li class="login-item"><a id="login-link" href="login.html">Login</a></li>
   </ul>
 </nav>
 
+<!-- Page Container -->
 <div class="page-container">
-  <h1>Welcome to Thesis Management!</h1>
-  <p>
-    Bu basit navigasyon ile farklı sayfalara geçerek veritabanına ekleme, silme, arama
-    ve tez yönetimi yapabilirsin. Menü sırası artık istediğin gibi düzenlendi.
-  </p>
+
+  <!-- How to Use Section -->
+  <div class="intro-section card animated-fadeIn">
+    <h2>How to Use This Project</h2>
+    <p>
+      This application is designed for managing academic theses. You can:
+    </p>
+    <ul>
+      <li><strong>Search Theses:</strong> Go to the <em>Search Theses</em> page to find theses by author, keywords, year, or type.</li>
+      <li><strong>Manage Theses:</strong> In the <em>Manage Theses</em> section, you can add new theses or update/delete existing ones. Dropdowns for authors, universities, and institutes are populated automatically.</li>
+      <li><strong>Add Entities:</strong> Easily create new authors, universities, or institutes via <em>Add Entities</em>.</li>
+      <li><strong>Delete Entities:</strong> Remove any existing authors, universities, or institutes using <em>Delete Entities</em>.</li>
+      <li><strong>Login (Optional):</strong> If this project has user authentication enabled, you can log in to unlock additional features.</li>
+    </ul>
+    <p>
+      Use the navigation bar at the top to switch between these sections. If the project requires authentication, some pages may be disabled until you log in.
+    </p>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <!-- Project Overview Section -->
+  <div class="project-overview card animated-fadeIn">
+    <h2>Project Overview</h2>
+    <p>
+      <strong>Technologies Used:</strong><br/>
+      - <strong>Python (Flask):</strong> Our backend API is built using the Flask microframework, handling database operations and RESTful endpoints.<br/>
+      - <strong>PostgreSQL:</strong> We store all thesis data, authors, institutes, and universities in a robust relational database.<br/>
+      - <strong>HTML, CSS, JavaScript:</strong> The frontend is designed with semantic HTML, modern CSS (including transitions and basic animations), and vanilla JavaScript for dynamic interactions.<br/>
+      - <strong>Fetch API:</strong> We use the Fetch API to send asynchronous requests to the Flask server, enabling operations like adding authors, deleting universities, searching theses, and more.<br/>
+      - <strong>Bootstrap / or Plain CSS (Optional):</strong> You can integrate a CSS framework like Bootstrap for rapid UI development, or continue using custom CSS for a more tailored design.<br/>
+    </p>
+    <p>
+      <strong>Key Features:</strong><br/>
+      - <strong>Search Theses:</strong> Filter by author, keywords, year, or type.<br/>
+      - <strong>Manage Theses:</strong> Create, update, and delete theses while automatically populating dropdowns (authors, universities, institutes).<br/>
+      - <strong>Add &amp; Delete Entities:</strong> Easily add or remove authors, universities, and institutes. PostgreSQL integrity ensures clean references.<br/>
+      - <strong>Secure Login (Optional):</strong> A simple login system that demonstrates how to integrate user authentication with a separate <code>users</code> table.<br/>
+    </p>
+    <p>
+      <br>
+      <strong>How It Works:</strong><br/>
+      - <em>Flask Backend:</em> We have multiple endpoints, such as <code>/add-thesis</code>, <code>/update-thesis/&lt;id&gt;</code>, <code>/delete-thesis/&lt;id&gt;</code>, etc.
+      These endpoints handle creation, update, and deletion of records in the PostgreSQL database.<br/>
+      - <em>Front-End:</em> Each page (<code>search-theses.html</code>, <code>manage-theses.html</code>, etc.) includes forms and tables.
+      We use JavaScript (with the Fetch API) to talk to the Flask server, retrieving or sending JSON data.<br/>
+      - <em>Database Schema:</em> The <code>thesis</code> table includes fields like <code>title</code>, <code>abstract</code>, <code>year</code>, <code>type</code>, etc.,
+      and references <code>authorid</code>, <code>universityid</code>, <code>instituteid</code>. The <code>author</code>, <code>university</code>, and <code>institute</code>
+      tables hold related info.
+    </p>
+    <p>
+      This layout streamlines academic research and thesis management, making it simpler for you
+      to explore, create, and maintain an organized database of theses.
+      <em>Enjoy exploring the project and feel free to contribute!</em>
+    </p>
+  </div>
+
 </div>
 </body>
 </html>

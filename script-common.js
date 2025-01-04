@@ -34,3 +34,25 @@ function preventDuplicateEventListener(formId, callback) {
         form.dataset.listenerAdded = "true";
     }
 }
+ document.addEventListener("DOMContentLoaded", () => {
+    // localStorage'da "loggedIn" varsa kullanıcı login olmuş demektir
+    const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+
+    // Linkleri DOM'dan yakalayalım
+    const manageLink = document.getElementById("manage-theses-link");
+    const addLink = document.getElementById("add-entities-link");
+    const deleteLink = document.getElementById("delete-entities-link");
+
+    // Eğer login değilse bu linkleri pasif hale getir
+    if (!isLoggedIn) {
+    manageLink.classList.add("disabled");
+    addLink.classList.add("disabled");
+    deleteLink.classList.add("disabled");
+}
+    // Eğer login ise, bu üç link aktif kalsın (yani .disabled yok)
+    else {
+    manageLink.classList.remove("disabled");
+    addLink.classList.remove("disabled");
+    deleteLink.classList.remove("disabled");
+}
+});

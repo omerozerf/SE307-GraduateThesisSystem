@@ -104,3 +104,26 @@ td {
 th {
     background-color: #f4f4f4;
 }
+
+/* Varsa, menüye dair mevcut tanımların devamına ekleyebilirsin. */
+
+/* Nav ayarları (örnek) */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    align-items: center;  /* Dikey ortalama */
+    /* justify-content: flex-start;  <-- default hali */
+    margin: 0;
+    padding: 0;
+}
+
+/* Login linkini en sağa itmek için kullandığımız sınıf */
+.login-item {
+    margin-left: auto; /* Burası, item'ı en sağa yaslar */
+}
+
+.disabled {
+    pointer-events: none; /* Tıklamayı engeller */
+    opacity: 0.5;         /* Görsel olarak yarı saydam gösterir */
+}

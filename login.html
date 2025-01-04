@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a id="home-link" href="index.html">Home</a></li>
+        <li><a id="search-theses-link" href="search-theses.html">Search Theses</a></li>
+        <li><a id="manage-theses-link" href="manage-theses.html">Manage Theses</a></li>
+        <li><a id="add-entities-link" href="add-entities.html">Add Entities</a></li>
+        <li><a id="delete-entities-link" href="delete-entities.html">Delete Entities</a></li>
+        <li class="login-item"><a id="login-link" href="login.html" class="active">Login</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+    <div class="card animated-fadeIn">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username</label>
+            <input type="text" id="username" required />
+
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Menüyü kontrol edelim (pasif/aktif)
+        const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+        const manageLink = document.getElementById("manage-theses-link");
+        const addLink = document.getElementById("add-entities-link");
+        const deleteLink = document.getElementById("delete-entities-link");
+
+        if (!isLoggedIn) {
+            manageLink.classList.add("disabled");
+            addLink.classList.add("disabled");
+            deleteLink.classList.add("disabled");
+        } else {
+            manageLink.classList.remove("disabled");
+            addLink.classList.remove("disabled");
+            deleteLink.classList.remove("disabled");
+        }
+
+        // Login formu
+        const loginForm = document.getElementById("login-form");
+        loginForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // Burada backend ile login kontrolü yapacaksan fetch ile /login'e istek atacaksın.
+            // Basit örnek olarak direk "login başarılı" kabul edelim:
+
+            // localStorage'a set
+            localStorage.setItem("loggedIn", "true");
+
+            alert("Logged in successfully!");
+            // Anasayfaya veya istediğin sayfaya yönlendir
+            window.location.href = "index.html";
+        });
+    });
+</script>
+</body>
+</html>
